@@ -1,13 +1,11 @@
-The bones project creates a barebones MEAN stack.
+# The Bones project
+*A bare bones MEAN stack*
 
-It uses packer to provision a Vagrant box and Amazon AMI.
-
-An atlas account can be made here: https://atlas.hashicorp.com/
-Atlas is where you host your vagrant box.
-
-Packer can be downloaded here: https://www.packer.io/
-
-to build a minimal vagrant box
-  export ATLAS_TOKEN=<atlas token generated at atlas.hashicorp.com>
-  cd packer
-  packer build -var-file=vars.json packer.json
+* Use [packer](https://www.packer.io/) to provision a minimal CentOS-7 VM.
+  * Store your application specific variables in a vars.json file as documented [here](https://www.packer.io/docs/templates/user-variables.html)
+  * `export ATLAS_TOKEN=atlas token generated at atlas.hashicorp.com`
+  * `cd packer`
+  * `packer build -var-file=vars.json packer.json`
+* Host your VM as a Vagrant box at [Atlas](https://atlas.hashicorp.com/).
+* Host your VM as a AMI at [Amazon](https://console.aws.amazon.com/).
+* Use [Vagrant](https://www.vagrantup.com/) to run a local development stack.
