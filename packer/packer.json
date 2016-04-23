@@ -1,0 +1,56 @@
+{
+  "variables": {
+    "aws_access_key": "",
+    "aws_secret_key": "",
+    "iso_url": "",
+    "iso_checksum": "",
+    "iso_checksum_type": "",
+    "packer_token": "",
+    "packer_version": ""
+  },
+  "provisioners": [{
+    "type": "shell",
+    "execute_command": "echo 'vagrant'|sudo -S sh '{{.Path}}'",
+    "only": ["virtualbox-iso"],
+    "scripts": [ "scripts/java.sh", "scripts/vagrantkey.sh" ]
+  }],
+  "builders": [{
+    "type": "virtualbox-iso",
+    "boot_command": [
+      "<tab> text net.ifnames=0 ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ks.cfg<enter><wait>"
+    ],
+    "boot_wait": "10s",
+    "disk_size": 8000,
+    "guest_os_type": "RedHat_64",
+    "http_directory": "http",
+    "ssh_username": "vagrant",
+    "ssh_password": "vagrant",
+    "ssh_port": 22,
+    "ssh_wait_timeout": "10000s",
+    "vboxmanage": [
+      [ "modifyvm", "{{.Name}}", "--memory", "512" ],
+      [ "modifyvm", "{{.Name}}", "--cpus", "1" ]
+    ],
+    "shutdown_command": "echo '/sbin/halt -h -p' > /tmp/shutdown.sh; echo 'vagrant'|sudo -S sh '/tmp/shutdown.sh'",
+    "iso_checksum": "{{user `iso_checksum`}}",
+    "iso_checksum_type": "{{user `iso_checksum_type`}}",
+    "iso_urls": [ "{{user `iso_url`}}" ]
+  }],
+  "post-processors": [{
+      "type": "vagrant",
+      "keep_input_artifact": false
+    },{
+      "type": "atlas",
+      "only": ["virtualbox-iso"],
+      "artifact": "EliasGoldberg/centos7",
+      "artifact_type": "vagrant.box",
+      "metadata": {
+        "provider": "virtualbox",
+        "version": "{{user `packer_version`}}"
+    }
+  }],
+  "push": {
+    "name": "EliasGoldberg/boink",
+    "token": "{{user `packer_token`}}"
+  }
+}
