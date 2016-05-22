@@ -22,11 +22,13 @@ Vagrant.configure(2) do |config|
     vomer.vm.network "private_network", type: "static", ip: "172.28.128.5"
     vomer.vm.hostname = "vomer.dark.fish"
     vomer.vm.provision "shell", path: "scripts/node.sh"
+    vomer.vm.synced_folder "../src/", "/srv/website"
   end
 
   config.vm.define "lunate" do |lunate|
     lunate.vm.network "private_network", type: "static", ip: "172.28.128.6"
     lunate.vm.hostname = "lunate.dark.fish"
+    lunate.vm.synced_folder "../src/", "/srv/website"
   end
 
   config.vm.provision "shell", inline: <<-SHELL
