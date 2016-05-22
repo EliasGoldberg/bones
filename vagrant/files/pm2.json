@@ -1,0 +1,24 @@
+{
+  "apps": [
+    {
+      "exec_mode": "fork_mode",
+      "script": "/srv/website/express/hello.js",
+      "name": "hello-0",
+      "node_args": [ "--harmony" ],
+      "env": {
+        "PORT": 8081,
+        "NODE_ENV": "production"
+      }
+    },
+    {
+      "exec_mode": "fork_mode",
+      "script": "/srv/website/express/hello.js",
+      "name": "hello-1",
+      "node_args": [ "--harmony" ],
+      "env": {
+        "PORT": 8082,
+        "NODE_ENV": "production"
+      }
+    }
+  ]
+}
