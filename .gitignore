@@ -1,3 +1,5 @@
 packer/output-virtualbox-iso/
 packer/packer_cache/
 packer/vars.json
+packer/packer_virtualbox-iso_virtualbox.box
+vagrant/.vagrant/

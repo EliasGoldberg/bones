@@ -8,11 +8,28 @@ Vagrant.configure(2) do |config|
 
   config.vm.box = "EliasGoldberg/centos7"
 
-  config.vm.define "bones" do |bones|
-    bones.vm.network "private_network", type: "static", ip: "172.28.128.3"
-    bones.vm.hostname = "bones.dark.fish"
-    bones.vm.provision "shell", inline: <<-SHELL
-
-    SHELL
+  config.vm.define "ulna" do |ulna|
+    ulna.vm.network "private_network", type: "static", ip: "172.28.128.3"
+    ulna.vm.hostname = "ulna.dark.fish"
   end
+
+  config.vm.define "incus" do |incus|
+    incus.vm.network "private_network", type: "static", ip: "172.28.128.4"
+    incus.vm.hostname = "incus.dark.fish"
+  end
+
+  config.vm.define "vomer" do |vomer|
+    vomer.vm.network "private_network", type: "static", ip: "172.28.128.5"
+    vomer.vm.hostname = "vomer.dark.fish"
+    vomer.vm.provision "shell", path: "scripts/node.sh"
+  end
+
+  config.vm.define "lunate" do |lunate|
+    lunate.vm.network "private_network", type: "static", ip: "172.28.128.6"
+    lunate.vm.hostname = "lunate.dark.fish"
+  end
+
+  config.vm.provision "shell", inline: <<-SHELL
+
+  SHELL
 end
