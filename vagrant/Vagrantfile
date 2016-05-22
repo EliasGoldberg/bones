@@ -4,31 +4,36 @@
 Vagrant.configure(2) do |config|
 
   config.landrush.enabled = true
-  config.landrush.tld = 'dark.fish'
+  config.landrush.tld = 'bones.fish'
 
   config.vm.box = "EliasGoldberg/centos7"
 
   config.vm.define "ulna" do |ulna|
     ulna.vm.network "private_network", type: "static", ip: "172.28.128.3"
-    ulna.vm.hostname = "ulna.dark.fish"
+    ulna.vm.hostname = "ulna.bones.fish"
   end
 
   config.vm.define "incus" do |incus|
     incus.vm.network "private_network", type: "static", ip: "172.28.128.4"
-    incus.vm.hostname = "incus.dark.fish"
+    incus.vm.hostname = "incus.bones.fish"
   end
 
   config.vm.define "vomer" do |vomer|
     vomer.vm.network "private_network", type: "static", ip: "172.28.128.5"
-    vomer.vm.hostname = "vomer.dark.fish"
+    vomer.vm.hostname = "vomer.bones.fish"
     vomer.vm.provision "shell", path: "scripts/node.sh"
-    vomer.vm.synced_folder "../src/", "/srv/website"
+    vomer.vm.provision "shell", path: "scripts/nginx.sh"
+    vomer.vm.synced_folder "../src/express", "/srv/website/express"
+    vomer.vm.synced_folder "../src/nginx", "/srv/website/nginx"
   end
 
   config.vm.define "lunate" do |lunate|
     lunate.vm.network "private_network", type: "static", ip: "172.28.128.6"
-    lunate.vm.hostname = "lunate.dark.fish"
-    lunate.vm.synced_folder "../src/", "/srv/website"
+    lunate.vm.hostname = "lunate.bones.fish"
+    lunate.vm.provision "shell", path: "scripts/node.sh"
+    lunate.vm.provision "shell", path: "scripts/nginx.sh"
+    lunate.vm.synced_folder "../src/express", "/srv/website/express"
+    lunate.vm.synced_folder "../src/nginx", "/srv/website/nginx"
   end
 
   config.vm.provision "shell", inline: <<-SHELL
