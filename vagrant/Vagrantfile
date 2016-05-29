@@ -5,17 +5,24 @@ Vagrant.configure(2) do |config|
 
   config.landrush.enabled = true
   config.landrush.tld = 'bones.fish'
+  config.landrush.host 'bare.bones.fish', '172.28.128.42'
 
   config.vm.box = "EliasGoldberg/centos7"
 
   config.vm.define "ulna" do |ulna|
     ulna.vm.network "private_network", type: "static", ip: "172.28.128.3"
     ulna.vm.hostname = "ulna.bones.fish"
+    ulna.vm.provision "shell", path: "scripts/haproxy.sh"
+    ulna.vm.provision "shell", path: "scripts/keepalived.sh",
+    args: ["MASTER","101","172.28.128.3","172.28.128.4"]
   end
 
   config.vm.define "incus" do |incus|
     incus.vm.network "private_network", type: "static", ip: "172.28.128.4"
     incus.vm.hostname = "incus.bones.fish"
+    incus.vm.provision "shell", path: "scripts/haproxy.sh"
+    incus.vm.provision "shell", path: "scripts/keepalived.sh",
+    args: ["BACKUP","100","172.28.128.4","172.28.128.3"]
   end
 
   config.vm.define "vomer" do |vomer|
