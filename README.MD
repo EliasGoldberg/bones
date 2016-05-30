@@ -12,5 +12,4 @@
   * `cd ../vagrant`
   * `vagrant up`
 
-
 sudo killall -HUP mDNSResponder
