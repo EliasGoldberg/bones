@@ -11,3 +11,6 @@
 * Use [Vagrant](https://www.vagrantup.com/) to run a local development stack.
   * `cd ../vagrant`
   * `vagrant up`
+
+
+sudo killall -HUP mDNSResponder

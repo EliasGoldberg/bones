@@ -9,12 +9,21 @@ Vagrant.configure(2) do |config|
 
   config.vm.box = "EliasGoldberg/centos7"
 
+  config.vm.define "malar" do |malar|
+    malar.vm.network "private_network", type: "static", ip: "172.28.128.7"
+    malar.vm.hostname = "malar.bones.fish"
+    malar.vm.provision "shell", path: "scripts/elk.sh"
+    malar.vm.provision "shell", path: "scripts/nginx.sh",
+    args: ["nginx_elk.conf"]
+  end
+
   config.vm.define "ulna" do |ulna|
     ulna.vm.network "private_network", type: "static", ip: "172.28.128.3"
     ulna.vm.hostname = "ulna.bones.fish"
     ulna.vm.provision "shell", path: "scripts/haproxy.sh"
     ulna.vm.provision "shell", path: "scripts/keepalived.sh",
     args: ["MASTER","101","172.28.128.3","172.28.128.4"]
+    ulna.vm.provision "shell", path: "scripts/elk_client.sh"
   end
 
   config.vm.define "incus" do |incus|
@@ -23,13 +32,16 @@ Vagrant.configure(2) do |config|
     incus.vm.provision "shell", path: "scripts/haproxy.sh"
     incus.vm.provision "shell", path: "scripts/keepalived.sh",
     args: ["BACKUP","100","172.28.128.4","172.28.128.3"]
+    incus.vm.provision "shell", path: "scripts/elk_client.sh"
   end
 
   config.vm.define "vomer" do |vomer|
     vomer.vm.network "private_network", type: "static", ip: "172.28.128.5"
     vomer.vm.hostname = "vomer.bones.fish"
     vomer.vm.provision "shell", path: "scripts/node.sh"
-    vomer.vm.provision "shell", path: "scripts/nginx.sh"
+    vomer.vm.provision "shell", path: "scripts/nginx.sh",
+    args: ["nginx_app.conf"]
+    vomer.vm.provision "shell", path: "scripts/elk_client.sh"
     vomer.vm.synced_folder "../src/express", "/srv/website/express"
     vomer.vm.synced_folder "../src/nginx", "/srv/website/nginx"
   end
@@ -38,7 +50,9 @@ Vagrant.configure(2) do |config|
     lunate.vm.network "private_network", type: "static", ip: "172.28.128.6"
     lunate.vm.hostname = "lunate.bones.fish"
     lunate.vm.provision "shell", path: "scripts/node.sh"
-    lunate.vm.provision "shell", path: "scripts/nginx.sh"
+    lunate.vm.provision "shell", path: "scripts/nginx.sh",
+    args: ["nginx_app.conf"]
+    lunate.vm.provision "shell", path: "scripts/elk_client.sh"
     lunate.vm.synced_folder "../src/express", "/srv/website/express"
     lunate.vm.synced_folder "../src/nginx", "/srv/website/nginx"
   end
