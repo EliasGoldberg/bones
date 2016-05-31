@@ -17,5 +17,10 @@ cp /vagrant/files/topbeat.yml /etc/topbeat/topbeat.yml
 systemctl start topbeat
 systemctl enable topbeat
 
+yum install -y packetbeat
+cp /vagrant/files/packetbeat.yml /etc/packetbeat/packetbeat.yml
+systemctl start packetbeat
+systemctl enable packetbeat
+
 firewall-cmd --zone=public --add-port=5044/tcp --permanent
 firewall-cmd --reload

@@ -20,6 +20,7 @@ Vagrant.configure(2) do |config|
     malar.vm.provision "shell", path: "scripts/nginx.sh",
     args: ["nginx_elk.conf"]
     malar.vm.provision "shell", path: "scripts/elk_client.sh"
+    malar.vm.provision "shell", path: "scripts/time.sh"
   end
 
   config.vm.define "ulna" do |ulna|
@@ -29,6 +30,7 @@ Vagrant.configure(2) do |config|
     ulna.vm.provision "shell", path: "scripts/keepalived.sh",
     args: ["MASTER","101","172.28.128.3","172.28.128.4"]
     ulna.vm.provision "shell", path: "scripts/elk_client.sh"
+    ulna.vm.provision "shell", path: "scripts/time.sh"
   end
 
   config.vm.define "incus" do |incus|
@@ -38,6 +40,7 @@ Vagrant.configure(2) do |config|
     incus.vm.provision "shell", path: "scripts/keepalived.sh",
     args: ["BACKUP","100","172.28.128.4","172.28.128.3"]
     incus.vm.provision "shell", path: "scripts/elk_client.sh"
+    incus.vm.provision "shell", path: "scripts/time.sh"
   end
 
   config.vm.define "vomer" do |vomer|
@@ -49,6 +52,7 @@ Vagrant.configure(2) do |config|
     vomer.vm.provision "shell", path: "scripts/elk_client.sh"
     vomer.vm.synced_folder "../src/express", "/srv/website/express"
     vomer.vm.synced_folder "../src/nginx", "/srv/website/nginx"
+    vomer.vm.provision "shell", path: "scripts/time.sh"
   end
 
   config.vm.define "lunate" do |lunate|
@@ -60,6 +64,7 @@ Vagrant.configure(2) do |config|
     lunate.vm.provision "shell", path: "scripts/elk_client.sh"
     lunate.vm.synced_folder "../src/express", "/srv/website/express"
     lunate.vm.synced_folder "../src/nginx", "/srv/website/nginx"
+    lunate.vm.provision "shell", path: "scripts/time.sh"
   end
 
   config.vm.provision "shell", inline: <<-SHELL
